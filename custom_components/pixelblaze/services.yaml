@@ -1,0 +1,97 @@
+save_preset:
+  target:
+    entity:
+      integration: pixelblaze
+      domain: light
+  fields:
+    preset:
+      required: true
+      example: "Calm blue"
+      selector:
+        text:
+    include_brightness:
+      default: false
+      selector:
+        boolean:
+
+recall_preset:
+  target:
+    entity:
+      integration: pixelblaze
+      domain: light
+  fields:
+    preset:
+      required: true
+      example: "Calm blue"
+      selector:
+        text:
+
+delete_preset:
+  target:
+    entity:
+      integration: pixelblaze
+      domain: light
+  fields:
+    preset:
+      required: true
+      example: "Calm blue"
+      selector:
+        text:
+
+set_pattern:
+  target:
+    entity:
+      integration: pixelblaze
+      domain: light
+  fields:
+    pattern:
+      required: true
+      example: "rainbow melt"
+      selector:
+        text:
+    controls:
+      example: '{"sliderSpeed": 0.5, "hsvPickerColor": [0.6, 1, 1]}'
+      selector:
+        object:
+
+play_playlist:
+  target:
+    entity:
+      integration: pixelblaze
+      domain: light
+  fields:
+    playlist:
+      required: true
+      example: "Evening"
+      selector:
+        text:
+
+set_controls:
+  target:
+    entity:
+      integration: pixelblaze
+      domain: light
+  fields:
+    controls:
+      required: true
+      example: '{"sliderSpeed": 0.5}'
+      selector:
+        object:
+
+set_variables:
+  target:
+    entity:
+      integration: pixelblaze
+      domain: light
+  fields:
+    variables:
+      required: true
+      example: '{"myVar": 3}'
+      selector:
+        object:
+
+get_state:
+  target:
+    entity:
+      integration: pixelblaze
+      domain: light

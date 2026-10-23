@@ -1,0 +1,17 @@
+{
+  "domain": "pixelblaze",
+  "name": "Pixelblaze",
+  "codeowners": [
+    "@RoussLabs"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/RoussLabs/HA-Pixelblaze",
+  "integration_type": "device",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/RoussLabs/HA-Pixelblaze/issues",
+  "loggers": [
+    "custom_components.pixelblaze"
+  ],
+  "requirements": [],
+  "version": "1.0.1"
+}

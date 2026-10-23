@@ -1,0 +1,244 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add a Pixelblaze",
+        "description": "These Pixelblazes were found on your network.",
+        "data": {
+          "host": "Device"
+        }
+      },
+      "manual": {
+        "title": "Add a Pixelblaze",
+        "description": "Enter the host name or IP address of your Pixelblaze.",
+        "data": {
+          "host": "[%key:common::config_flow::data::host%]"
+        }
+      },
+      "reconfigure": {
+        "title": "Change Pixelblaze address",
+        "data": {
+          "host": "[%key:common::config_flow::data::host%]"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]"
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
+      "reconfigure_successful": "[%key:common::config_flow::abort::reconfigure_successful%]",
+      "wrong_device": "That address belongs to a different Pixelblaze."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Polling interval (seconds)",
+          "save_to_flash": "Save changes to the device's flash",
+          "control_entities": "Create entities for pattern controls"
+        },
+        "data_description": {
+          "scan_interval": "How often to re-read the full device state. Sequencer pattern changes are pushed instantly; this catches changes made from the Pixelblaze web UI or other apps.",
+          "save_to_flash": "Persist brightness and slider changes so they survive a power cycle. They are written 30 seconds after they stop changing, to limit flash wear. Pattern changes are always saved by the device itself.",
+          "control_entities": "Create number, switch and light entities for the sliders, toggles and color pickers that patterns expose."
+        }
+      }
+    }
+  },
+  "entity": {
+    "button": {
+      "next_pattern": {
+        "name": "Next pattern"
+      },
+      "previous_pattern": {
+        "name": "Previous pattern"
+      },
+      "random_pattern": {
+        "name": "Random pattern"
+      },
+      "refresh_patterns": {
+        "name": "Refresh pattern list"
+      }
+    },
+    "number": {
+      "max_brightness": {
+        "name": "Brightness limit"
+      },
+      "shuffle_time": {
+        "name": "Shuffle time per pattern"
+      }
+    },
+    "select": {
+      "pattern": {
+        "name": "Pattern"
+      },
+      "preset": {
+        "name": "Preset"
+      },
+      "sequencer_mode": {
+        "name": "Sequencer mode",
+        "state": {
+          "off": "Off",
+          "shuffle": "Shuffle all",
+          "playlist": "Playlist"
+        }
+      },
+      "playlist": {
+        "name": "Playlist"
+      }
+    },
+    "sensor": {
+      "active_pattern": {
+        "name": "Active pattern"
+      },
+      "fps": {
+        "name": "Frame rate"
+      },
+      "storage_used": {
+        "name": "Storage used"
+      },
+      "last_boot": {
+        "name": "Last boot"
+      }
+    },
+    "switch": {
+      "sequencer": {
+        "name": "Sequencer playing"
+      }
+    }
+  },
+  "services": {
+    "save_preset": {
+      "name": "Save preset",
+      "description": "Save what the Pixelblaze is doing now (pattern, control values, sequencer) as a named preset. Saving with an existing name overwrites it.",
+      "fields": {
+        "preset": {
+          "name": "Preset",
+          "description": "Name of the preset."
+        },
+        "include_brightness": {
+          "name": "Include brightness",
+          "description": "Also restore the current brightness when the preset is recalled."
+        }
+      }
+    },
+    "recall_preset": {
+      "name": "Recall preset",
+      "description": "Restore a saved preset.",
+      "fields": {
+        "preset": {
+          "name": "Preset",
+          "description": "Name of the preset."
+        }
+      }
+    },
+    "delete_preset": {
+      "name": "Delete preset",
+      "description": "Delete a saved preset.",
+      "fields": {
+        "preset": {
+          "name": "Preset",
+          "description": "Name of the preset."
+        }
+      }
+    },
+    "set_pattern": {
+      "name": "Set pattern",
+      "description": "Play a pattern (pausing the sequencer), optionally setting its controls.",
+      "fields": {
+        "pattern": {
+          "name": "Pattern",
+          "description": "Pattern name or ID."
+        },
+        "controls": {
+          "name": "Controls",
+          "description": "Control values to apply after switching, as a mapping of control name to value (for example sliderSpeed: 0.5)."
+        }
+      }
+    },
+    "set_controls": {
+      "name": "Set controls",
+      "description": "Set UI control values on the running pattern. Sliders are 0-1, color pickers are [h, s, v] or [r, g, b] in 0-1.",
+      "fields": {
+        "controls": {
+          "name": "Controls",
+          "description": "Control names and values."
+        }
+      }
+    },
+    "set_variables": {
+      "name": "Set variables",
+      "description": "Set exported variables on the running pattern.",
+      "fields": {
+        "variables": {
+          "name": "Variables",
+          "description": "Variable names and values."
+        }
+      }
+    },
+    "get_state": {
+      "name": "Get state",
+      "description": "Return the full current state of the Pixelblaze: pattern, controls, sequencer, presets and pattern list."
+    },
+    "play_playlist": {
+      "name": "Play playlist",
+      "description": "Load a playlist saved in Home Assistant into the Pixelblaze and play it from the start.",
+      "fields": {
+        "playlist": {
+          "name": "Playlist",
+          "description": "Name of the saved playlist."
+        }
+      }
+    }
+  },
+  "config_subentries": {
+    "playlist": {
+      "entry_type": "Playlist",
+      "initiate_flow": {
+        "user": "Add playlist"
+      },
+      "step": {
+        "user": {
+          "title": "New playlist",
+          "description": "Add patterns with **Add**, drag them by the handle to set the order, and use the pencil or bin icons to edit or remove one.",
+          "data": {
+            "name": "Name",
+            "items": "Patterns",
+            "default_duration": "Default duration"
+          },
+          "data_description": {
+            "items": "Played from top to bottom. The same pattern can appear more than once.",
+            "default_duration": "Used for any pattern you leave without a duration."
+          }
+        },
+        "reconfigure": {
+          "title": "Edit playlist",
+          "description": "Drag patterns by the handle to reorder them; use the pencil or bin icons to edit or remove one.",
+          "data": {
+            "name": "Name",
+            "items": "Patterns",
+            "default_duration": "Default duration"
+          },
+          "data_description": {
+            "items": "Played from top to bottom. The same pattern can appear more than once.",
+            "default_duration": "Used for any pattern you leave without a duration."
+          }
+        }
+      },
+      "error": {
+        "name_required": "Give the playlist a name.",
+        "name_exists": "There's already a playlist with that name.",
+        "no_patterns": "Pick at least one pattern.",
+        "unknown_patterns": "These patterns aren't on the Pixelblaze any more; remove or replace them: {missing}",
+        "too_many_patterns": "A Pixelblaze playlist holds at most {max} patterns."
+      },
+      "abort": {
+        "device_unavailable": "The Pixelblaze isn't connected. Check that it's online, then try again.",
+        "no_device_patterns": "The Pixelblaze has no saved patterns.",
+        "reconfigure_successful": "Playlist saved."
+      }
+    }
+  }
+}
