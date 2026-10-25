@@ -1,17 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
   <g stroke="#14213d" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
-    <!-- legs -->
+    <!-- legs: anode (left) long, cathode (right) short -->
     <line x1="110" y1="200" x2="110" y2="250" stroke-width="12"/>
-    <line x1="146" y1="200" x2="146" y2="240" stroke-width="12"/>
+    <line x1="146" y1="200" x2="146" y2="230" stroke-width="12"/>
     <line x1="110" y1="200" x2="110" y2="250" stroke="#c3ccd5" stroke-width="5"/>
-    <line x1="146" y1="200" x2="146" y2="240" stroke="#c3ccd5" stroke-width="5"/>
-    <!-- outer flame -->
-    <path fill="#ff6b1a" d="M128,5 C142,32 172,42 170,82 C186,72 190,56 188,42 C216,72 214,122 190,150 L66,150 C42,122 40,74 68,42 C66,58 72,72 86,82 C84,44 112,32 128,5 Z"/>
-    <!-- inner flame -->
-    <path fill="#ffd23f" stroke-width="5" d="M128,34 C138,54 158,64 154,94 C166,86 169,76 169,68 C182,90 180,124 164,146 L92,146 C76,124 74,92 88,72 C90,84 96,92 104,96 C102,70 118,54 128,34 Z"/>
+    <line x1="146" y1="200" x2="146" y2="230" stroke="#c3ccd5" stroke-width="5"/>
+    <!-- flame: a single peak -->
+    <path fill="#ff6b1a" d="M128,4 C150,42 194,66 194,112 C194,136 178,152 164,158 L92,158 C78,152 62,136 62,112 C62,66 106,42 128,4 Z"/>
+    <path fill="#ffd23f" stroke-width="5" d="M128,42 C142,70 170,86 170,118 C170,136 158,148 146,152 L110,152 C98,148 86,136 86,118 C86,86 114,70 128,42 Z"/>
     <!-- LED body -->
     <path fill="#2f80ff" d="M90,184 L90,134 A38,38 0 0 1 166,134 L166,184 Z"/>
-    <rect x="78" y="178" width="100" height="22" rx="7" fill="#1b5ed6"/>
+    <!-- rim: rounded on the anode side, cut flat on the cathode side -->
+    <path fill="#1b5ed6" stroke-linejoin="miter" d="M83,178 H170 V200 H83 Q76,200 76,193 V185 Q76,178 83,178 Z"/>
   </g>
   <!-- shine -->
   <path d="M105,168 L105,136 A23,23 0 0 1 117,116" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="8" stroke-linecap="round"/>
