@@ -1,9 +1,9 @@
-Orchestrated & Directed by RoussLab; Coded by Robots
-
-
-
 # Pixelblaze for Home Assistant
 
+Directed and edited by RoussLabs; grunt work by Robots.\
+Nothing here is anything I wouldn't read or reference myself.
+
+<br>
 <p align="center">
   <img src="https://raw.githubusercontent.com/RoussLabs/HA-Pixelblaze/main/custom_components/pixelblaze/brand/icon.png" alt="Blue LED on fire">
 </p>
@@ -11,10 +11,46 @@ Orchestrated & Directed by RoussLab; Coded by Robots
 ## About
 Control [Pixelblaze](https://electromage.com/) LED controllers from Home Assistant. You can set brightness, patterns, sequencer modes and pattern controls (sliders, toggles, colour pickers), and can save and recall multiple presets. Additionally, Home Assistant monitors current state of Pixelblaze and keeps HA in sync, even when the change came from somewhere else.
 
+<br>
 
 > **Not affiliated with ElectroMage.** This is an independent, community-made integration. It isn't made, endorsed, supported or reviewed by ElectroMage, the maker of Pixelblaze. "Pixelblaze" is used only to say which devices it works with. For problems with this integration, [open an issue here](https://github.com/RoussLabs/HA-Pixelblaze/issues), not with ElectroMage.
 
 This is a rewrite of [vutang50/homeassistant-pixelblaze](https://github.com/vutang50/homeassistant-pixelblaze). The protocol knowledge comes from [zranger1/pixelblaze-client](https://github.com/zranger1/pixelblaze-client).
+
+<br>
+
+## Installation
+
+Requires Home Assistant 2025.7 or newer. The integration's icon shows in Home Assistant 2026.3 and newer; earlier versions show a placeholder.
+
+### HACS (recommended)
+
+[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=RoussLabs&repository=HA-Pixelblaze&category=integration)
+
+1. Install [HACS](https://hacs.xyz/docs/use/) if you haven't already.
+2. In Home Assistant, open **HACS**, then the **⋮** menu (top right), then **Custom repositories**.
+3. Enter `https://github.com/RoussLabs/HA-Pixelblaze`, choose type **Integration**, and select **Add**.
+4. Search HACS for **Pixelblaze**, open it, and select **Download**.
+5. Restart Home Assistant.
+6. Go to **Settings → Devices & services → Add integration → Pixelblaze**. Pixelblazes on your network are found automatically from their UDP beacons on port 1889. You can also type an address.
+
+HACS will offer updates whenever a new release is published.
+
+> **Note:** HACS can only download from **public** GitHub repositories. Home Assistant's *Settings → Apps → Repositories* is for apps (add-ons) and can't install integrations.
+
+### Manual
+
+Copy `custom_components/pixelblaze` into your Home Assistant `config/custom_components/` folder, restart Home Assistant, then add the integration as in step 6.
+
+There are no Python dependencies. The integration uses Home Assistant's own `aiohttp`.
+
+If the device's IP address changes, use **Reconfigure** on the integration entry, or add it again and the existing entry is updated. Devices are identified by chip ID (or MAC on older firmware), not by IP.
+
+### Migrating from vutang50/homeassistant-pixelblaze
+
+The domain (`pixelblaze`) is the same, but the entities are new and YAML configuration is no longer supported. Remove the old integration entries and YAML, install this version, then add your devices again.
+
+<br>
 
 ## How it Knows the Current State of PB
 
@@ -134,37 +170,6 @@ Selecting a pattern from HA **pauses** the sequencer, so the pattern you chose s
 - **Polling interval** (default 10 s): how quickly changes made outside HA show up.
 - **Save changes to flash** (default on): brightness and slider changes are saved with `save: true` 30 s after they stop changing, following the official guidance to avoid flash wear. Sequencer changes are saved right away. **Pattern changes are always saved by the device itself** (official API), whatever this option says, so automations that switch patterns very often do write to flash.
 - **Create entities for pattern controls** (default on).
-
-## Installation
-
-Requires Home Assistant 2025.7 or newer. The integration's icon shows in Home Assistant 2026.3 and newer; earlier versions show a placeholder.
-
-### HACS (recommended)
-
-[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=RoussLabs&repository=HA-Pixelblaze&category=integration)
-
-1. Install [HACS](https://hacs.xyz/docs/use/) if you haven't already.
-2. In Home Assistant, open **HACS**, then the **⋮** menu (top right), then **Custom repositories**.
-3. Enter `https://github.com/RoussLabs/HA-Pixelblaze`, choose type **Integration**, and select **Add**.
-4. Search HACS for **Pixelblaze**, open it, and select **Download**.
-5. Restart Home Assistant.
-6. Go to **Settings → Devices & services → Add integration → Pixelblaze**. Pixelblazes on your network are found automatically from their UDP beacons on port 1889. You can also type an address.
-
-HACS will offer updates whenever a new release is published.
-
-> **Note:** HACS can only download from **public** GitHub repositories. Home Assistant's *Settings → Apps → Repositories* is for apps (add-ons) and can't install integrations.
-
-### Manual
-
-Copy `custom_components/pixelblaze` into your Home Assistant `config/custom_components/` folder, restart Home Assistant, then add the integration as in step 6.
-
-There are no Python dependencies. The integration uses Home Assistant's own `aiohttp`.
-
-If the device's IP address changes, use **Reconfigure** on the integration entry, or add it again and the existing entry is updated. Devices are identified by chip ID (or MAC on older firmware), not by IP.
-
-### Migrating from vutang50/homeassistant-pixelblaze
-
-The domain (`pixelblaze`) is the same, but the entities are new and YAML configuration is no longer supported. Remove the old integration entries and YAML, install this version, then add your devices again.
 
 ## Protocol Notes (Advanced)
 
