@@ -1,6 +1,6 @@
 # Pixelblaze for Home Assistant
 
-Directed and edited by RoussLabs; grunt work by Robots.\
+Directed and edited by RoussLabs; grunt work by robots.\
 Nothing here is anything I wouldn't read or reference myself.
 
 <br>
