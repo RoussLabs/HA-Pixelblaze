@@ -1,22 +1,22 @@
-# ⚠️⚠️⚠️ Please Note: This is currently a work in progress
-
 Orchestrated & Directed by RoussLab; Coded by Robots
 
 
 
 # Pixelblaze for Home Assistant
 
-<img src="https://raw.githubusercontent.com/RoussLabs/HA-Pixelblaze/main/custom_components/pixelblaze/brand/icon.png" alt="Blue LED on fire" width="96">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RoussLabs/HA-Pixelblaze/main/custom_components/pixelblaze/brand/icon.png" alt="Blue LED on fire">
+</p>
+
+## About
+Control [Pixelblaze](https://electromage.com/) LED controllers from Home Assistant. You can set brightness, patterns, sequencer modes and pattern controls (sliders, toggles, colour pickers), and can save and recall multiple presets. Additionally, Home Assistant monitors current state of Pixelblaze and keeps HA in sync, even when the change came from somewhere else.
+
 
 > **Not affiliated with ElectroMage.** This is an independent, community-made integration. It isn't made, endorsed, supported or reviewed by ElectroMage, the maker of Pixelblaze. "Pixelblaze" is used only to say which devices it works with. For problems with this integration, [open an issue here](https://github.com/RoussLabs/HA-Pixelblaze/issues), not with ElectroMage.
 
-Control [Pixelblaze](https://electromage.com/) LED controllers from Home Assistant. You can set brightness, patterns, sequencer modes and pattern controls (sliders, toggles, colour pickers), and save and recall presets.
-
-Home Assistant also always knows what the Pixelblaze is doing, even when the change came from somewhere else.
-
 This is a rewrite of [vutang50/homeassistant-pixelblaze](https://github.com/vutang50/homeassistant-pixelblaze). The protocol knowledge comes from [zranger1/pixelblaze-client](https://github.com/zranger1/pixelblaze-client).
 
-## How it knows the current state
+## How it Knows the Current State of PB
 
 The original integration opened a connection for each command and never read anything back. If the sequencer changed pattern, or someone used the Pixelblaze web UI, Home Assistant showed stale state.
 
@@ -87,7 +87,7 @@ If you saved the preset while the sequencer was playing, recalling it restarts t
 
 ## Playlists
 
-The Pixelblaze holds only one playlist. You can keep as many as you like in Home Assistant and load one onto the device whenever you want.
+The Pixelblaze holds only one playlist. You can keep as many as you like in Home Assistant and load one onto the device whenever you want. This action will overwrite the existing playlist so if its important, save in HA first.
 
 **Create one:** go to **Settings → Devices & services → Pixelblaze** and select **Add playlist** next to your device. Then:
 
@@ -166,7 +166,7 @@ If the device's IP address changes, use **Reconfigure** on the integration entry
 
 The domain (`pixelblaze`) is the same, but the entities are new and YAML configuration is no longer supported. Remove the old integration entries and YAML, install this version, then add your devices again.
 
-## Protocol notes
+## Protocol Notes (Advanced)
 
 Sources, in order of authority:
 
@@ -226,9 +226,9 @@ logger:
 
 - **"did not answer listPrograms"**: the Pixelblaze didn't send its pattern list within 15 s. The integration keeps working with the last known list and retries on every poll. With debug logging on, look for `binary frame: type 7` lines: if none appear, the device isn't answering. Close any open Pixelblaze web UI tabs and power-cycle the device.
 
-## Known limitations
+## Known Limitations
 
-* **Tested on one device.** It has been used on a real Pixelblaze v3 and is tested against a simulated device that follows the documentation in [References](#references). Other firmware versions, Pixelblaze v2 and output expanders haven't been tried.
+* **Tested on one device.** It has been used on a Pixelblaze v3 ([Fibonacci512](https://www.evilgeniuslabs.org/fibonacci512) by Evil Genius Labs) and is tested against a simulated device that follows the documentation in [References](#references). Other firmware versions, Pixelblaze v2 and output expanders haven't been tried.
 * **One playlist on the device.** The Pixelblaze holds a single playlist, so playing a saved playlist replaces what's on the device. A playlist can have at most 64 patterns (firmware v3.40 and later).
 * **Some pattern controls aren't supported.** `trigger*` controls aren't, because their wire format isn't documented; `showNumber*` and `gauge*` are outputs. `toggle*` and `inputNumber*` work, but aren't in the official API documentation.
 * **Pattern controls aren't on auto-generated dashboards.** They're in the device page's Configuration card, which Home Assistant's auto-generated dashboards leave out; add the ones you want to a dashboard by hand.
@@ -245,6 +245,7 @@ logger:
 * [Websockets API](https://electromage.com/docs/websockets-api): the official protocol documentation
 * [Language reference](https://electromage.com/docs/language-reference/): pattern language, including UI controls such as `sliderX` and `hsvPickerX`
 * [ElectroMage forum](https://forum.electromage.com/c/news-and-announcements/10): firmware release announcements, including [v3.40](https://forum.electromage.com/t/significant-feature-release-sync-multiple-pixelblazes/2891) (playlist transitions and 64-entry playlists)
+* [Fibonacci512 by Evil Genius Labs](https://www.evilgeniuslabs.org/fibonacci512): the test device
 
 **Libraries and apps this integration learned from**
 
