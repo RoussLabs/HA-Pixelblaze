@@ -32,13 +32,19 @@ jobs:
           ignore: brands topics description
 
   tests:
-    name: Tests
+    # 3.13 tests against Home Assistant 2026.2 (the last release for it);
+    # 3.14 tests against the newest Home Assistant.
+    name: Tests (Python ${{ matrix.python }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.13", "3.14"]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: ${{ matrix.python }}
       - run: pip install -r requirements_test.txt ruff
       - run: ruff check custom_components tests --select E,F,W,B,UP,I --ignore E501
       - run: pytest -q

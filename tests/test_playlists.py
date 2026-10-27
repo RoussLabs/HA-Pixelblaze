@@ -321,27 +321,25 @@ async def test_editor_needs_connected_device(hass: HomeAssistant, patch_client, 
 
 
 async def test_editor_form_serializes_for_frontend(
-    hass: HomeAssistant, setup_integration, fake_pb: FakePixelblaze
+    hass: HomeAssistant, setup_integration, fake_pb: FakePixelblaze, hass_client
 ):
-    """The form must convert to JSON the way the HTTP API sends it to the browser."""
-    import json
-
-    import voluptuous_serialize
-    from homeassistant.helpers import config_validation as cv
+    """The editor form survives the trip to the browser through the HTTP API."""
+    from homeassistant.setup import async_setup_component
 
     entry = setup_integration
-    result = await hass.config_entries.subentries.async_init(
-        (entry.entry_id, "playlist"), context={"source": SOURCE_USER}
+    assert await async_setup_component(hass, "config", {})
+    client = await hass_client()
+    response = await client.post(
+        "/api/config/config_entries/subentries/flow",
+        json={"handler": [entry.entry_id, "playlist"], "show_advanced_options": False},
     )
-    form = voluptuous_serialize.convert(
-        result["data_schema"], custom_serializer=cv.custom_serializer
-    )
+    assert response.status == 200
+    form = (await response.json())["data_schema"]
     items = next(field for field in form if field["name"] == "items")
     config = items["selector"]["object"]
     assert config["multiple"] is True
     assert config["label_field"] == "pattern"
     assert config["fields"]["pattern"]["selector"]["select"]["options"][0] == "Color fade"
-    json.dumps(form)
 
 
 def _asked(fake_pb: FakePixelblaze) -> int:
@@ -362,7 +360,6 @@ async def test_playlist_read_rarely(
     hass: HomeAssistant, setup_integration, fake_pb: FakePixelblaze
 ):
     """Read after playlists change and every few minutes, not on every poll."""
-    from unittest.mock import patch
 
     entry = setup_integration
     coordinator = entry.runtime_data
@@ -373,9 +370,8 @@ async def test_playlist_read_rarely(
         await coordinator.async_refresh()
     assert _asked(fake_pb) == 1  # not on ordinary polls
 
-    later = coordinator._playlist_read + 301
-    with patch("custom_components.pixelblaze.coordinator.time.monotonic", return_value=later):
-        await coordinator.async_refresh()
+    coordinator._playlist_read -= 301  # as if five minutes had passed
+    await coordinator.async_refresh()
     assert _asked(fake_pb) == 2  # and again after five minutes
 
 

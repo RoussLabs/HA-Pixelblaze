@@ -500,7 +500,7 @@ async def test_stale_pattern_controls_device_removed(
 
     config_entry.add_to_hass(hass)
     registry = dr.async_get(hass)
-    registry.async_get_or_create(
+    main = registry.async_get_or_create(
         config_entry_id=config_entry.entry_id,
         identifiers={(DOMAIN, "123456")},
         name="Test PB",
@@ -509,14 +509,13 @@ async def test_stale_pattern_controls_device_removed(
         config_entry_id=config_entry.entry_id,
         identifiers={(DOMAIN, "123456_pattern_controls")},
         name="Test PB pattern controls",
-        via_device=(DOMAIN, "123456"),
     )
+    registry.async_update_device(stale.id, via_device_id=main.id)
     assert await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
 
     assert registry.async_get(stale.id) is None
-    main = registry.async_get_device(identifiers={(DOMAIN, "123456")})
-    assert main is not None
+    assert registry.async_get(main.id) is not None
     assert not await async_remove_config_entry_device(hass, config_entry, main)
     await hass.config_entries.async_unload(config_entry.entry_id)
     await hass.async_block_till_done()
